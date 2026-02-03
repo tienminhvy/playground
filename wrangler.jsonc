@@ -1,0 +1,5 @@
+{
+    "name": "playground",
+    "compatibility_date": "2026-02-03",
+    "main": "src/main.ts"
+}
