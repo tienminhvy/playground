@@ -1,0 +1,18 @@
+@reference "tailwindcss";
+
+.window {
+    @apply min-w-2xl;
+    
+    &.small-size {
+        @apply max-w-sm
+    }
+    &.medium-size {
+        @apply max-w-lg
+    }
+    &.large-size {
+        @apply max-w-4xl
+    }
+    &.full-size {
+        @apply max-w-full
+    }
+}

@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { AfterViewInit, Component, input } from '@angular/core';
 
 @Component({
   selector: 'app-window-wrapper',
@@ -6,5 +6,5 @@ import { Component } from '@angular/core';
   styleUrl: './window-wrapper.css',
 })
 export class WindowWrapper {
-
+  readonly size = input<string>("medium");
 }
