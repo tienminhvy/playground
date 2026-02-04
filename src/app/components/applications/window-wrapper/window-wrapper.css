@@ -1,7 +1,7 @@
 @reference "tailwindcss";
 
 .window {
-    @apply min-w-2xl;
+    @apply min-w-2xl border border-gray-200;
     
     &.small-size {
         @apply max-w-sm
@@ -14,5 +14,20 @@
     }
     &.full-size {
         @apply max-w-full
+    }
+
+    .toolbar {
+        @apply flex w-full;
+
+        & .controls {
+            @apply flex w-full justify-end text-sm;
+
+            & > * {
+                @apply p-1 cursor-pointer;
+            }
+            & > * + * {
+                @apply ms-1;
+            }
+        }
     }
 }

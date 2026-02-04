@@ -1,3 +1,10 @@
-<div id="windowWrapper" class="window {{ size() }}-size">
+<div class="window {{ size() }}-size">
+    <div class="toolbar">
+        <div class="controls">
+            <div class="minimizer"><icon [path]="mdiWindowMinimize"></icon></div>
+            <div class="maximizer"><icon [path]="mdiDockWindow"></icon></div>
+            <div class="close-handler"><icon [path]="mdiWindowClose"></icon></div>
+        </div>
+    </div>
     <ng-content></ng-content>
 </div>
