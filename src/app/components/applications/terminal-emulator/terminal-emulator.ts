@@ -1,10 +1,11 @@
 import { AfterViewInit, Component, ElementRef, ViewChild, ViewEncapsulation } from '@angular/core';
 import { FitAddon } from '@xterm/addon-fit';
 import { Terminal } from '@xterm/xterm';
+import { WindowWrapper } from '../window-wrapper/window-wrapper';
 
 @Component({
   selector: 'app-terminal-emulator',
-  imports: [],
+  imports: [WindowWrapper],
   templateUrl: './terminal-emulator.html',
   styleUrl: "./terminal-emulator.css",
   encapsulation: ViewEncapsulation.None
@@ -19,7 +20,7 @@ export class TerminalEmulator implements AfterViewInit {
   constructor() {
   }
 
-  ngAfterViewInit(): void {
+  private loadTerminal(): void {
     this.terminal.loadAddon(this.fitAddon);
     this.fitAddon.fit();
 
@@ -39,6 +40,10 @@ export class TerminalEmulator implements AfterViewInit {
             this.terminal.write(e);
         }
     });
+  }
+
+  ngAfterViewInit(): void {
+    this.loadTerminal();
 
     // Handle window resize
     window.addEventListener('resize', () => {
