@@ -1,0 +1,7 @@
+@reference "tailwindcss";
+
+:host {
+    & path {
+        @apply fill-gray-600;
+    }
+}
