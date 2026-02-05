@@ -48,9 +48,10 @@ export class TerminalEmulator implements AfterViewInit {
 
     this.terminal.open(this.divElm.nativeElement);
 
-    this.displayWelcome();
-
     const PROMPT = `[${this.ANSI.yellow}${this.username}${this.ANSI.reset}@${this.ANSI.blue}${this.hostName}${this.ANSI.reset} ${this.ANSI.blue}~${this.ANSI.reset}] ${this.ANSI.blue}~${this.ANSI.reset} $ `;
+
+    this.terminal.writeln('\r\n' + PROMPT + "welcome");
+    this.displayWelcome();
     this.terminal.write('\r\n' + PROMPT);
     
     let commandBuffer = '';
