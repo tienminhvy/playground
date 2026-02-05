@@ -11,6 +11,6 @@ import { AsciiArts } from './constants/ascii-arts';
 })
 export class App {
   protected readonly title = signal('landing-page');
-  ventiAsciiArt = AsciiArts.VENTI_1;
+  ventiAsciiArt = AsciiArts.VENTI_2;
   catAsciiArt = AsciiArts.CAT_1;
 }
