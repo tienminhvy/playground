@@ -13,7 +13,7 @@ import { TerminalCommand } from '../../../models/terminal-command';
 })
 export class TerminalEmulator implements AfterViewInit {
   private terminal: Terminal = new Terminal({
-    rows: 30, 
+    rows: 40, 
   });
   private fitAddon: FitAddon = new FitAddon();
   private shellName: string = "vysh";
@@ -121,7 +121,8 @@ export class TerminalEmulator implements AfterViewInit {
     this.terminal.writeln('');
 
     this.terminal.writeln('');
-    this.terminal.writeln(`    For a list of available commands, try typing \`${this.ANSI.green}help${this.ANSI.reset}\`. This website source code is hosted at ${this.getWritableLink("tienminhvy/playground", "https://github.com/tienminhvy/playground/")}`);
+    this.terminal.writeln(`    For a list of available commands, try typing \`${this.ANSI.green}help${this.ANSI.reset}\`. This website source code is hosted at ` + 
+      this.getWritableLink("https://github.com/tienminhvy/playground/", "https://github.com/tienminhvy/playground/"));
     this.terminal.writeln('');
   }
 
@@ -130,7 +131,7 @@ export class TerminalEmulator implements AfterViewInit {
     const ST = '\x1b\\';
     
     // Pattern: OSC 8 ;; URL ST text OSC 8 ;; ST
-    return `${OSC}${url}${ST}${text}${OSC}${ST}`;
+    return `${this.ANSI.reset}${OSC}${url}${ST}${text}${OSC}${ST}${this.ANSI.reset}`;
   }
 
   private processCommand(cmd: string): void {
