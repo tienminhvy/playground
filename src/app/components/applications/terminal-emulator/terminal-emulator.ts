@@ -2,6 +2,7 @@ import { AfterViewInit, Component, ElementRef, input, ViewChild, ViewEncapsulati
 import { FitAddon } from '@xterm/addon-fit';
 import { Terminal } from '@xterm/xterm';
 import { WindowWrapper } from '../window-wrapper/window-wrapper';
+import { TerminalCommand } from '../../../models/terminal-command';
 
 @Component({
   selector: 'app-terminal-emulator',
@@ -12,11 +13,15 @@ import { WindowWrapper } from '../window-wrapper/window-wrapper';
 })
 export class TerminalEmulator implements AfterViewInit {
   private terminal: Terminal = new Terminal({
-    rows: 30, 
+    rows: 40, 
   });
   private fitAddon: FitAddon = new FitAddon();
   private shellName: string = "vysh";
-  private availableCommands: Array<string> = ['help', 'clear', 'welcome'];
+  private availableCommands: Array<TerminalCommand> = [
+    new TerminalCommand("help", "print this help information table"),
+    new TerminalCommand("clear", "clean this terminal's content"),
+    new TerminalCommand("welcome", "print the welcome message")
+  ];
   readonly asciiArt = input<string>("");
 
   private hostName: string = "tienminhvy.com";
@@ -48,9 +53,10 @@ export class TerminalEmulator implements AfterViewInit {
 
     this.terminal.open(this.divElm.nativeElement);
 
-    this.displayWelcome();
-
     const PROMPT = `[${this.ANSI.yellow}${this.username}${this.ANSI.reset}@${this.ANSI.blue}${this.hostName}${this.ANSI.reset} ${this.ANSI.blue}~${this.ANSI.reset}] ${this.ANSI.blue}~${this.ANSI.reset} $ `;
+
+    this.terminal.writeln('\r\n' + PROMPT + "welcome");
+    this.displayWelcome();
     this.terminal.write('\r\n' + PROMPT);
     
     let commandBuffer = '';
@@ -107,14 +113,35 @@ export class TerminalEmulator implements AfterViewInit {
     }
 
     this.terminal.writeln('');
-    this.terminal.writeln(`    For a list of available commands, try typing \`${this.ANSI.green}help${this.ANSI.reset}\`.`);
+    this.terminal.writeln(`    ${this.ANSI.bold}Personal Information:${this.ANSI.reset}`);
+    this.terminal.writeln('    Email: ' + this.getWritableLink("me[at]tienminhvy.com", "mailto:me@tienminhvy.com"));
+    this.terminal.writeln(`    ${this.ANSI.blue}${this.ANSI.bold}LinkedIn${this.ANSI.reset}: ` + this.getWritableLink("me@LinkedIn", "https://www.linkedin.com/in/tienminhvy/"));
+    this.terminal.writeln(`    ${this.ANSI.green}${this.ANSI.bold}GitHub${this.ANSI.reset}: ` + this.getWritableLink("me@GitHub", "https://github.com/tienminhvy/"));
+    this.terminal.writeln('    Blog: ' + this.getWritableLink("tienminhvy.id.vn", "https://tienminhvy.id.vn/"));
+    this.terminal.writeln('    Tutorial blog (Legacy): ' + this.getWritableLink("legacy.tienminhvy.com", "https://legacy.tienminhvy.com/chia-se/"));
     this.terminal.writeln('');
+
+    this.terminal.writeln('');
+    this.terminal.writeln(`    For a list of available commands, try typing \`${this.ANSI.green}help${this.ANSI.reset}\`. This website source code is hosted at ` + 
+      this.getWritableLink("https://github.com/tienminhvy/playground", "https://github.com/tienminhvy/playground"));
+    this.terminal.writeln('');
+  }
+
+  private getWritableLink(text: string, url: string): string {
+    const OSC = '\x1b]8;;';
+    const ST = '\x1b\\';
+    
+    // Pattern: OSC 8 ;; URL ST text OSC 8 ;; ST
+    return `${this.ANSI.reset}${OSC}${url}${ST}${text}${OSC}${ST}${this.ANSI.reset}`;
   }
 
   private processCommand(cmd: string): void {
     const command = cmd.trim().toLowerCase();
     if (command === 'help') {
-      this.terminal.writeln(`${this.shellName}: Available commands: ${ this.availableCommands.join(", ") }`);
+      this.terminal.writeln(`${this.shellName}: Available commands:`);
+      this.availableCommands.forEach((command: TerminalCommand) => {
+        this.terminal.writeln(`${this.ANSI.bold}${command.label}${this.ANSI.reset} - ${command.detail}`)
+      });
     } else if (command === 'clear') {
       this.terminal.clear();
     } else if (command === "welcome") {
