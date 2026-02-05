@@ -115,14 +115,15 @@ export class TerminalEmulator implements AfterViewInit {
     this.terminal.writeln('');
     this.terminal.writeln(`    ${this.ANSI.bold}Personal Information:${this.ANSI.reset}`);
     this.terminal.writeln('    Email: ' + this.getWritableLink("me[at]tienminhvy.com", "mailto:me@tienminhvy.com"));
-    this.terminal.writeln(`    ${this.ANSI.green}GitHub${this.ANSI.reset}: ` + this.getWritableLink("me@GitHub", "https://github.com/tienminhvy/"));
+    this.terminal.writeln(`    ${this.ANSI.blue}${this.ANSI.bold}LinkedIn${this.ANSI.reset}: ` + this.getWritableLink("me@LinkedIn", "https://www.linkedin.com/in/tienminhvy/"));
+    this.terminal.writeln(`    ${this.ANSI.green}${this.ANSI.bold}GitHub${this.ANSI.reset}: ` + this.getWritableLink("me@GitHub", "https://github.com/tienminhvy/"));
     this.terminal.writeln('    Blog: ' + this.getWritableLink("tienminhvy.id.vn", "https://tienminhvy.id.vn/"));
     this.terminal.writeln('    Tutorial blog (Legacy): ' + this.getWritableLink("legacy.tienminhvy.com", "https://legacy.tienminhvy.com/chia-se/"));
     this.terminal.writeln('');
 
     this.terminal.writeln('');
     this.terminal.writeln(`    For a list of available commands, try typing \`${this.ANSI.green}help${this.ANSI.reset}\`. This website source code is hosted at ` + 
-      this.getWritableLink("https://github.com/tienminhvy/playground/", "https://github.com/tienminhvy/playground/"));
+      this.getWritableLink("https://github.com/tienminhvy/playground", "https://github.com/tienminhvy/playground"));
     this.terminal.writeln('');
   }
 
