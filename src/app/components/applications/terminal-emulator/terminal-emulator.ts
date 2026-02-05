@@ -2,6 +2,7 @@ import { AfterViewInit, Component, ElementRef, input, ViewChild, ViewEncapsulati
 import { FitAddon } from '@xterm/addon-fit';
 import { Terminal } from '@xterm/xterm';
 import { WindowWrapper } from '../window-wrapper/window-wrapper';
+import { TerminalCommand } from '../../../models/terminal-command';
 
 @Component({
   selector: 'app-terminal-emulator',
@@ -16,7 +17,11 @@ export class TerminalEmulator implements AfterViewInit {
   });
   private fitAddon: FitAddon = new FitAddon();
   private shellName: string = "vysh";
-  private availableCommands: Array<string> = ['help', 'clear', 'welcome'];
+  private availableCommands: Array<TerminalCommand> = [
+    new TerminalCommand("help", "print this help information table"),
+    new TerminalCommand("clear", "clean this terminal's content"),
+    new TerminalCommand("welcome", "print the welcome message")
+  ];
   readonly asciiArt = input<string>("");
 
   private hostName: string = "tienminhvy.com";
@@ -108,14 +113,33 @@ export class TerminalEmulator implements AfterViewInit {
     }
 
     this.terminal.writeln('');
-    this.terminal.writeln(`    For a list of available commands, try typing \`${this.ANSI.green}help${this.ANSI.reset}\`.`);
+    this.terminal.writeln(`    ${this.ANSI.bold}Personal Information:${this.ANSI.reset}`);
+    this.terminal.writeln('    Email: ' + this.getWritableLink("me[at]tienminhvy.com", "mailto:me@tienminhvy.com"));
+    this.terminal.writeln(`    ${this.ANSI.green}GitHub${this.ANSI.reset}: ` + this.getWritableLink("me@GitHub", "https://github.com/tienminhvy/"));
+    this.terminal.writeln('    Blog: ' + this.getWritableLink("tienminhvy.id.vn", "https://tienminhvy.id.vn/"));
+    this.terminal.writeln('    Tutorial blog (Legacy): ' + this.getWritableLink("legacy.tienminhvy.com", "https://legacy.tienminhvy.com/chia-se/"));
     this.terminal.writeln('');
+
+    this.terminal.writeln('');
+    this.terminal.writeln(`    For a list of available commands, try typing \`${this.ANSI.green}help${this.ANSI.reset}\`. This website source code is hosted at ${this.getWritableLink("tienminhvy/playground", "https://github.com/tienminhvy/playground/")}`);
+    this.terminal.writeln('');
+  }
+
+  private getWritableLink(text: string, url: string): string {
+    const OSC = '\x1b]8;;';
+    const ST = '\x1b\\';
+    
+    // Pattern: OSC 8 ;; URL ST text OSC 8 ;; ST
+    return `${OSC}${url}${ST}${text}${OSC}${ST}`;
   }
 
   private processCommand(cmd: string): void {
     const command = cmd.trim().toLowerCase();
     if (command === 'help') {
-      this.terminal.writeln(`${this.shellName}: Available commands: ${ this.availableCommands.join(", ") }`);
+      this.terminal.writeln(`${this.shellName}: Available commands:`);
+      this.availableCommands.forEach((command: TerminalCommand) => {
+        this.terminal.writeln(`${this.ANSI.bold}${command.label}${this.ANSI.reset} - ${command.detail}`)
+      });
     } else if (command === 'clear') {
       this.terminal.clear();
     } else if (command === "welcome") {
