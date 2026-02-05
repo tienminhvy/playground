@@ -4,16 +4,16 @@
     @apply min-w-2xl border border-gray-200;
     
     &.small-size {
-        @apply max-w-sm
+        @apply min-w-sm
     }
     &.medium-size {
-        @apply max-w-lg
+        @apply min-w-lg
     }
     &.large-size {
-        @apply max-w-4xl
+        @apply min-w-7xl
     }
     &.full-size {
-        @apply max-w-full
+        @apply min-w-full
     }
 
     .toolbar {
