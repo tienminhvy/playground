@@ -2,7 +2,10 @@
 </style>
 
 <div class="main-container">
-  <app-terminal-emulator [asciiArt]="ventiAsciiArt"></app-terminal-emulator>
+  <div class="main-view bg-inazuma">
+    <app-terminal-emulator [asciiArt]="ventiAsciiArt"></app-terminal-emulator>
+  </div>
+  <div class="taskbar"></div>
 </div>
 
 <router-outlet />
