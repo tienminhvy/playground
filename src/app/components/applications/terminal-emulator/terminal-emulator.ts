@@ -15,6 +15,7 @@ import { TerminalCommandManager } from '../../../models/terminal/terminal-comman
 export class TerminalEmulator implements AfterViewInit {
   private terminal: Terminal = new Terminal({
     rows: 40, 
+    cursorBlink: true,
   });
   private fitAddon: FitAddon = new FitAddon();
   readonly asciiArt = input<string>("");
