@@ -1,5 +1,9 @@
 @reference "tailwindcss";
 
-.main-container {
+.main-view {
     @apply flex items-center justify-center h-dvh overflow-hidden;
+
+    & > * {
+        @apply z-10;
+    }
 }
