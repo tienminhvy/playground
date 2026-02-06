@@ -24,6 +24,9 @@ export class TerminalEmulator implements AfterViewInit {
   private divElm!: ElementRef;
   
   constructor() {
+    if (!window.LOGGED_IN_TIME) {
+      window.LOGGED_IN_TIME = new Date();
+    }
   }
 
   private getVisibleLength(str: string): number {
