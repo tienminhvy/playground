@@ -3,7 +3,7 @@
 .main-view {
     @apply flex items-center justify-center h-dvh overflow-hidden;
 
-    &.bg-inazuma {
-        @apply bg-[url(/imgs/background-GI-Inazuma.jpg)];
+    & > * {
+        @apply z-10;
     }
 }
