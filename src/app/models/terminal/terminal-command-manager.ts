@@ -1,6 +1,7 @@
 import { Terminal } from "@xterm/xterm";
 import { TerminalCommand } from "./terminal-command"
 import { TerminalExecutor } from "./terminal-executor";
+import { formatDate } from "@angular/common";
 
 export class TerminalCommandManager {
   private static readonly SHELL_NAME: string = "vysh";
@@ -48,6 +49,21 @@ export class TerminalCommandManager {
     this.registerCommand(new TerminalCommand("welcome", "print the welcome message", () => {
       if (!this.terminal) return;
       this.printWelcomeMessage();
+    }));
+
+    this.registerCommand(new TerminalCommand("whoami", "print effective user name", () => {
+      if (!this.terminal) return;
+      this.terminal.writeln(`${this.USERNAME}`);
+    }));
+
+    this.registerCommand(new TerminalCommand("who", "show who is logged on", () => {
+      if (!this.terminal) return;
+      this.terminal.writeln(`${this.USERNAME}  seat0\t ${ formatDate(window.LOGGED_IN_TIME, "yyyy-MM-dd HH:mm", "en-US") } (:0)`);
+    }));
+
+    this.registerCommand(new TerminalCommand("pwd", "print name of current/working directory", () => {
+      if (!this.terminal) return;
+      this.terminal.writeln(`/home/${this.USERNAME}`);
     }));
 
     this.inited = true;
