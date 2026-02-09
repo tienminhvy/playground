@@ -1,6 +1,6 @@
 import { AfterViewInit, Component, ElementRef, input, ViewChild, ViewEncapsulation } from '@angular/core';
 import { FitAddon } from '@xterm/addon-fit';
-import { Terminal } from '@xterm/xterm';
+import { IBufferRange, Terminal } from '@xterm/xterm';
 import { WindowWrapper } from '../window-wrapper/window-wrapper';
 import { TerminalCommand } from '../../../models/terminal/terminal-command';
 import { TerminalCommandManager } from '../../../models/terminal/terminal-command-manager';
@@ -17,7 +17,7 @@ export class TerminalEmulator implements AfterViewInit {
     rows: 40, 
     cursorBlink: true,
   });
-  private fitAddon: FitAddon = new FitAddon();
+  private fitAddon: FitAddon = new FitAddon();  
   readonly asciiArt = input<string>("");
   
   @ViewChild("emulator", { static: false }) 
@@ -34,7 +34,18 @@ export class TerminalEmulator implements AfterViewInit {
     return str.replace(ansiRegex, '').length;
   }
 
+  private overrideTheLinkHandlerActivationMethod() : void {
+    this.terminal.options.linkHandler = {
+      activate: (e, text, range) => {
+        window.open(text, '_blank');
+      },
+      hover: (e, text, range) => {
+      }
+    };
+  }
+
   private loadTerminal(): void {
+    this.overrideTheLinkHandlerActivationMethod();
     this.terminal.loadAddon(this.fitAddon);
     this.fitAddon.fit();
 
