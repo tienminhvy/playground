@@ -1,6 +1,6 @@
 import { AfterViewInit, Component, ElementRef, input, ViewChild, ViewEncapsulation } from '@angular/core';
 import { FitAddon } from '@xterm/addon-fit';
-import { IBufferRange, Terminal } from '@xterm/xterm';
+import { Terminal } from '@xterm/xterm';
 import { WindowWrapper } from '../window-wrapper/window-wrapper';
 import { TerminalCommand } from '../../../models/terminal/terminal-command';
 import { TerminalCommandManager } from '../../../models/terminal/terminal-command-manager';
@@ -34,7 +34,7 @@ export class TerminalEmulator implements AfterViewInit {
     return str.replace(ansiRegex, '').length;
   }
 
-  private overrideTheLinkHandlerActivationMethod() : void {
+  private setupLinkHandler() : void {
     this.terminal.options.linkHandler = {
       activate: (e, text, range) => {
         try {
@@ -57,7 +57,7 @@ export class TerminalEmulator implements AfterViewInit {
   }
 
   private loadTerminal(): void {
-    this.overrideTheLinkHandlerActivationMethod();
+    this.setupLinkHandler();
     this.terminal.loadAddon(this.fitAddon);
     this.fitAddon.fit();
 
