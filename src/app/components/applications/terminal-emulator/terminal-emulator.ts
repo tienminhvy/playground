@@ -37,7 +37,19 @@ export class TerminalEmulator implements AfterViewInit {
   private overrideTheLinkHandlerActivationMethod() : void {
     this.terminal.options.linkHandler = {
       activate: (e, text, range) => {
-        window.open(text, '_blank');
+        try {
+          const url = new URL(text, window.location.href);
+          const allowedProtocols = ['http:', 'https:', 'mailto:'];
+          if (!allowedProtocols.includes(url.protocol)) {
+            return;
+          }
+          const newWindow = window.open(url.toString(), '_blank', 'noopener,noreferrer');
+          if (newWindow) {
+            newWindow.opener = null;
+          }
+        } catch {
+          // Ignore invalid URLs
+        }
       },
       hover: (e, text, range) => {
       }
