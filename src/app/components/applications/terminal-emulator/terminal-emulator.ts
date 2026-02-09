@@ -17,7 +17,7 @@ export class TerminalEmulator implements AfterViewInit {
     rows: 40, 
     cursorBlink: true,
   });
-  private fitAddon: FitAddon = new FitAddon();
+  private fitAddon: FitAddon = new FitAddon();  
   readonly asciiArt = input<string>("");
   
   @ViewChild("emulator", { static: false }) 
@@ -34,7 +34,30 @@ export class TerminalEmulator implements AfterViewInit {
     return str.replace(ansiRegex, '').length;
   }
 
+  private setupLinkHandler() : void {
+    this.terminal.options.linkHandler = {
+      activate: (e, text, range) => {
+        try {
+          const url = new URL(text, window.location.href);
+          const allowedProtocols = ['http:', 'https:', 'mailto:'];
+          if (!allowedProtocols.includes(url.protocol)) {
+            return;
+          }
+          const newWindow = window.open(url.toString(), '_blank', 'noopener,noreferrer');
+          if (newWindow) {
+            newWindow.opener = null;
+          }
+        } catch {
+          // Ignore invalid URLs
+        }
+      },
+      hover: (e, text, range) => {
+      }
+    };
+  }
+
   private loadTerminal(): void {
+    this.setupLinkHandler();
     this.terminal.loadAddon(this.fitAddon);
     this.fitAddon.fit();
 
