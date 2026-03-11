@@ -1,3 +1,3 @@
 ## Playground
 
-A small playground by me
+A small playground (mostly front-end codes)
